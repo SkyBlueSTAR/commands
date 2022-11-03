@@ -1,0 +1,57 @@
+・コマンド群1
+scoreboard objectives add PlayerID dummy
+scoreboard objectives add shift dummy
+scoreboard objectives add ice dummy
+scoreboard objectives add ice_shot dummy
+・コマンド群2
+execute as @r[tag=!login] run scoreboard players add p PlayerID 1
+execute as @r[tag=!login] run scoreboard players operation @s PlayerID = p PlayerID
+tag @a[tag=!login,scores={PlayerID=0..}] add login
+scoreboard players add @e PlayerID 0
+・コマンド群3
+execute as @a[hasitem={item=packed_ice,location=slot.weapon.mainhand}] at @s positioned ^^^10 run summon parrot ~~1000~ minecraft:on_tame shiftcheck
+execute as @a[hasitem={item=packed_ice,location=slot.weapon.mainhand}] at @s positioned ~~1000~ positioned ^^^100 run scoreboard players operation @e[name=shiftcheck,type=parrot,c=1] shift = @s PlayerID
+execute as @a[hasitem={item=packed_ice,location=slot.weapon.mainhand}] at @e[type=parrot,name=shiftcheck] if score @s PlayerID = @e[type=parrot,name=shiftcheck,c=1] shift run ride @e[type=parrot,name=shiftcheck,c=1] start_riding @s teleport_rider
+execute as @e[type=parrot,name=shiftcheck] at @s run tp @s 0 ~ 0
+execute as @e[type=parrot,name=shiftcheck] at @a[hasitem={item=packed_ice,location=slot.weapon.mainhand}] if score @s shift = @p PlayerID positioned 0 ~1.22 0 if entity @s[r=0.1] run execute as @s at @a[hasitem={item=packed_ice,location=slot.weapon.mainhand}] if score @s shift = @p PlayerID run scoreboard players add @p shift 1
+execute as @e[type=parrot,name=shiftcheck] at @a[hasitem={item=packed_ice,location=slot.weapon.mainhand}] if score @s shift = @p PlayerID positioned 0 ~1.22 0 if entity @s[rm=0.1] run execute as @s at @a[hasitem={item=packed_ice,location=slot.weapon.mainhand}] if score @s shift = @p PlayerID run scoreboard players set @p shift 0
+tp @e[type=parrot,name=shiftcheck] ~~-1000000~
+kill @e[type=minecraft:parrot,name=shiftcheck]
+execute as @e[c=2] as @e[c=2] as @e[c=2] at @a[scores={shift=1}] run summon armor_stand ice_shot ~~~
+scoreboard players add @e[type=armor_stand,name=ice_shot] ice_shot 1
+execute as @e[type=armor_stand,name=ice_shot,scores={ice_shot=1},c=8] at @e[type=armor_stand,name=ice_shot,scores={ice_shot=1},rym=0,ry=0,c=8] at @s run tp ~ ~ ~ ~44.99999
+execute as @e[type=armor_stand,name=ice_shot,scores={ice_shot=1}] at @s run scoreboard players operation @s PlayerID = @p PlayerID
+execute as @e[type=armor_stand,name=ice_shot] at @s run execute positioned as @e[family=!inanimate,family=!item,c=1] unless score @s PlayerID = @e[c=1] PlayerID positioned ^10000^^ if entity @s[r=10000] at @s run tp @s ~~~~-10
+execute as @e[type=armor_stand,name=ice_shot] at @s run execute positioned as @e[family=!inanimate,family=!item,c=1] unless score @s PlayerID = @e[c=1] PlayerID positioned ^-10000^^ if entity @s[r=10000] at @s run tp @s ~~~~10
+execute as @e[type=armor_stand,name=ice_shot] at @s run execute positioned as @e[family=!inanimate,family=!item,c=1] unless score @s PlayerID = @e[c=1] PlayerID positioned ^^10000^ if entity @s[r=10000] at @s run tp @s[rx=0] ~~~~~-20
+execute as @e[type=armor_stand,name=ice_shot] at @s run execute positioned as @e[family=!inanimate,family=!item,c=1] unless score @s PlayerID = @e[c=1] PlayerID positioned ^^-10000^ if entity @s[r=10000] at @s run tp @s[rxm=0] ~~~~~20
+execute as @e[type=armor_stand,name=ice_shot] at @s run tp @s ^^^-0.5
+replaceitem entity @e[type=armor_stand,name=ice_shot] slot.weapon.mainhand 0 packed_ice
+playanimation @e[type=armor_stand,name=ice_shot] animation.armor_stand.athena_pose none 100
+effect @e[type=armor_stand,name=ice_shot] invisibility 1 1 true
+execute at @e[type=armor_stand,name=ice_shot] positioned ~~1~ as @e[r=2] unless score @e[c=1] PlayerID = @s PlayerID run scoreboard players add @e[c=1] ice_shot 200
+execute at @e[type=armor_stand,name=ice_shot] positioned ~~1~ as @e[r=2] unless score @e[c=1] PlayerID = @s PlayerID run damage @s 7 freezing
+tp @e[type=armor_stand,name=ice_shot,scores={ice_shot=100..}] ~~-100000~
+execute at @e[type=armor_stand,name=ice_shot] run setblock ~~~ packed_ice 0 keep
+execute at @e[type=armor_stand,name=ice_shot] if block ~~~ packed_ice -1 run setblock ~~~ air 0 destroy
+execute at @e[type=armor_stand,name=ice_shot] if block ~~~ air -1 run kill @e[type=item,name=氷塊,c=1]
+・コマンド群4
+execute at @a[hasitem={item=packed_ice,location=slot.weapon.mainhand}] run summon armor_stand ice ~~-2~
+scoreboard players add @e[type=armor_stand,name=ice] ice 1
+execute at @e[type=armor_stand,name=ice,scores={ice=20..}] run fill ~-1~~-1~1~1~1 air 0 replace packed_ice
+execute at @e[type=armor_stand,name=ice,scores={ice=..19}] run fill ~-1~~-1~1~1~1 packed_ice 0 keep
+execute as @e[type=armor_stand,name=ice,scores={ice=..19}] at @s run tp @s ~~~
+effect @e[type=armor_stand,name=ice] invisibility 1 1 true
+tp @e[type=armor_stand,name=ice,scores={ice=20..}] ~~-100000~
+・コマンド群5
+execute as @e[type=item,name=氷塊] at @s positioned ~~-1~ run give @p packed_ice
+execute as @e[c=2] as @e[c=2] as @e[c=2] as @e[c=2] as @e[c=2] as @e[c=2] as @e[c=2] as @e[c=2] as @e[c=2] as @e[c=2] as @e[type=item,name=氷塊] at @s run tp @s ^^^1 true
+execute as @e[type=item,name=氷塊] at @s if block ^^^1 air -1 run kill @s
+execute at @e[type=item,name=氷塊] run summon armor_stand ice_prison ~~~
+scoreboard players add @e[type=armor_stand,name=ice_prison] ice 1
+execute at @e[type=armor_stand,name=ice_prison] run fill ~-2~-1~-2~2~3~2 packed_ice 0 keep
+execute at @e[type=armor_stand,name=ice_prison,scores={ice=100..}] run fill ~-2~-1~-2~2~3~2 air 0 replace packed_ice
+kill @e[type=item,name=氷塊]
+kill @e[type=armor_stand,name=ice_prison,scores={ice=100..}]
+effect @e[type=armor_stand,name=ice_prison] invisibility 1 1 true
+execute as @e[type=armor_stand,name=ice_prison] at @s run tp @s ~~~
